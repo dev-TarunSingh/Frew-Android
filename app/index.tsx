@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, StatusBar } from "react-native";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { Button } from "react-native-paper";
@@ -9,20 +9,22 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Products from "./Products";
-
-const Stack = createNativeStackNavigator();
+import frewPng from '../assets/frew-png.png';
 
 export default function Page() {
   
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={"#FFAA00"}
+      />
       <View style={styles.header}>
+      <Image source={frewPng} style={styles.imageStyle} />
         <Text style={{ color: "white", fontSize: 40, padding: 10 }}>Frew!</Text>
       </View>
       <View>
-        <Text style={styles.begin}>Available Products</Text>
+        <Text style={styles.begin}>Available Products!</Text>
       </View>
-        <Products />
+        <Products  />
       <TouchableOpacity
         onPress={() => console.log("Floating button pressed")}
         style={styles.floatingButton}
@@ -42,7 +44,16 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#FFAA00",
     borderBottomLeftRadius: 16,
+    flexDirection: "row",
     borderBottomRightRadius: 16,
+    elevation: 5, 
+  },
+  imageStyle: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    margin: 10,
+    elevation: 5, 
   },
   begin: {
     fontSize: 20,
@@ -50,6 +61,7 @@ const styles = StyleSheet.create({
     color: "black",
     textAlign: "left",
     padding: 10,
+    elevation: 5, 
   },
   floatingButton: {
     position: 'absolute',

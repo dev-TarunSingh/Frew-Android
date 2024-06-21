@@ -1,3 +1,4 @@
+import { Link } from "@react-navigation/native";
 import React, { Component, useEffect, useState } from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import {
@@ -25,19 +26,24 @@ const Products = () => {
 
   return (
     <GestureHandlerRootView>
+      
       <ScrollView contentContainerStyle={styles.productslist}>
+
         {data.map((product, index) => (
+            
           <TouchableOpacity style={styles.cards} key={index}>
+            
             <View>
+                
               <Image
                 source={{ uri: product.image }}
                 style={{
-                  width: 400,
+                  width: "100%",
                   height: 200,
                   borderRadius: 16,
-                  margin: 5,
                 }}
               />
+              
             </View>
             <View style={{ alignItems: "center", alignContent: "center" }}>
               <Text style={styles.prod_title}>{product.title}</Text>
@@ -56,8 +62,11 @@ const Products = () => {
                 <Text style={styles.btnText}>Add to Cart</Text>
               </TouchableOpacity>
             </View>
+            
           </TouchableOpacity>
+          
         ))}
+        
       </ScrollView>
     </GestureHandlerRootView>
   );
