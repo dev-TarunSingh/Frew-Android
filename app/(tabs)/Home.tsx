@@ -1,13 +1,25 @@
-import { Link } from "@react-navigation/native";
-import React, { Component, useEffect, useState } from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import { ScrollView } from "react-native-gesture-handler";
+import { Button } from "react-native-paper";
 import {
   GestureHandlerRootView,
   NativeViewGestureHandler,
 } from "react-native-gesture-handler";
-import { ScrollView } from "react-native-gesture-handler";
+import { Link } from "expo-router";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import icons from "../../constonants/icons.js";
 
-const Products = () => {
+export default function Page() {
+  const [dataloaded, setdataloaded] = useState(false);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -16,8 +28,10 @@ const Products = () => {
         const response = await fetch("https://fakestoreapi.com/products");
         const jsonData = await response.json();
         setData(jsonData);
+        setdataloaded(!dataloaded);
       } catch (error) {
         console.warn("Error fetching data: ", error);
+        setData(null);
       }
     };
 
@@ -25,16 +39,43 @@ const Products = () => {
   }, []);
 
   return (
-    <GestureHandlerRootView>
-      
-      <ScrollView contentContainerStyle={styles.productslist}>
+    <>
+      <View style={styles.container}>
+        <StatusBar backgroundColor={"#FFAA00"} />
+        <View style={styles.header}>
+          <Image source={icons.icon} style={styles.imageStyle} />
+          <Text style={{ color: "white", fontSize: 40, padding: 10 }}>
+            Frew!
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.begin}>Available Products!</Text>
+        </View>
+        {dataloaded ? (
+          <Products data={data} />
+        ) : data === null ? (
+          <Text>Can't Retrieve data, check your connection..</Text>
+        ) : (
+          <Text>Loading...</Text>
+        )}
+      </View>
+    </>
+  );
+}
 
+const Products = ({ data }) => {
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (product) => {
+    setCartItems([...cartItems, product]);
+  };
+
+  return (
+    <GestureHandlerRootView>
+      <ScrollView contentContainerStyle={styles.productslist}>
         {data.map((product, index) => (
-            
           <TouchableOpacity style={styles.cards} key={index}>
-            
             <View>
-                
               <Image
                 source={{ uri: product.image }}
                 style={{
@@ -43,7 +84,6 @@ const Products = () => {
                   borderRadius: 16,
                 }}
               />
-              
             </View>
             <View style={{ alignItems: "center", alignContent: "center" }}>
               <Text style={styles.prod_title}>{product.title}</Text>
@@ -58,21 +98,49 @@ const Products = () => {
               <TouchableOpacity style={styles.price}>
                 <Text style={styles.btnText1}>$ {product.price}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.btn}>
+              <TouchableOpacity
+                onPress={() => addToCart(product)}
+                style={styles.btn}
+              >
                 <Text style={styles.btnText}>Add to Cart</Text>
               </TouchableOpacity>
             </View>
-            
           </TouchableOpacity>
-          
         ))}
-        
       </ScrollView>
     </GestureHandlerRootView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 40,
+    flex: 1,
+    alignItems: "center",
+  },
+  header: {
+    width: "100%",
+    backgroundColor: "#FFAA00",
+    borderBottomLeftRadius: 16,
+    flexDirection: "row",
+    borderBottomRightRadius: 16,
+    elevation: 5,
+  },
+  imageStyle: {
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    margin: 10,
+    elevation: 5,
+  },
+  begin: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "black",
+    textAlign: "left",
+    padding: 10,
+    elevation: 5,
+  },
   productslist: {
     width: "100%",
     paddingTop: 0,
@@ -148,5 +216,3 @@ const styles = StyleSheet.create({
     color: "black",
   },
 });
-
-export default Products;
