@@ -8,13 +8,12 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
 import {
   GestureHandlerRootView,
   NativeViewGestureHandler,
 } from "react-native-gesture-handler";
 import { Link } from "expo-router";
-import { NavigationContainer } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import icons from "../../constonants/icons.js";
 
@@ -70,11 +69,22 @@ const Products = ({ data }) => {
     setCartItems([...cartItems, product]);
   };
 
+  const navigation = useNavigation();
+
+  const openProductDetails = (product) => {
+    if (!product) {
+      console.error("Product is undefined");
+      return;
+    }
+    console.log("Navigating with product:", product);
+    navigation.navigate('ProductDetails', { product } );
+  }
+
   return (
     <GestureHandlerRootView>
       <ScrollView contentContainerStyle={styles.productslist}>
         {data.map((product, index) => (
-          <TouchableOpacity style={styles.cards} key={index}>
+          <TouchableOpacity onPress={() => openProductDetails(product)} style={styles.cards} key={index}>
             <View>
               <Image
                 source={{ uri: product.image }}

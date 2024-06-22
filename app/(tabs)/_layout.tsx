@@ -38,6 +38,7 @@ const MainLayout = () => {
         tabBarStyle: {
           borderTopEndRadius: 20,
           borderTopStartRadius: 20,
+          elevation: 5,
         },
       }}
     >
