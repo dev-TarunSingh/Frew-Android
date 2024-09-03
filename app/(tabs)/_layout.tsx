@@ -5,7 +5,7 @@ import icons from "../../constonants/icons.js";
 
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <View style={{ flex: 1, alignItems: "center", padding: 5 }}>
       <Image
         source={icon}
         resizeMode="contain"
@@ -39,6 +39,7 @@ const MainLayout = () => {
           borderTopEndRadius: 20,
           borderTopStartRadius: 20,
           elevation: 5,
+          height: 60,
         },
       }}
     >

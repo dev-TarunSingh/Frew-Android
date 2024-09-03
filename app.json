@@ -1,13 +1,37 @@
 {
   "expo": {
-    "scheme": "acme",
+    "name": "Frew",
+    "slug": "your-app-slug",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/frew-png.png",
+    "splash": {
+      "image": "./assets/frew-png.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.frew.frew"
+    },
     "web": {
-      "bundler": "metro"
+      "favicon": "./assets/frew-png.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5e2bda70-c189-4bf2-a92e-42ffa9102be8"
+      }
     },
     "plugins": [
       "expo-router"
-    ],
-    "name": "frew",
-    "slug": "frew"
+    ]
   }
 }

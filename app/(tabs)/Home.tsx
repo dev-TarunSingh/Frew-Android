@@ -16,34 +16,40 @@ import { Link } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import icons from "../../constonants/icons.js";
+import { Button } from "react-native-paper";
 
 export default function Page() {
   const [dataloaded, setdataloaded] = useState(false);
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        const jsonData = await response.json();
-        setData(jsonData);
-        setdataloaded(!dataloaded);
-      } catch (error) {
-        console.warn("Error fetching data: ", error);
-        setData(null);
-      }
-    };
-
     fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/home");
+      const jsonData = await response.json();
+      setData(jsonData);
+      setdataloaded(!dataloaded);
+    } catch (error) {
+      console.warn("Error fetching data: ", error);
+      setData(null);
+    }
+  };
+
+  const retryLoadingData = () => {
+    fetchData();
+  };
 
   return (
     <>
       <View style={styles.container}>
-        <StatusBar backgroundColor={"#FFAA00"} />
+        <StatusBar />
         <View style={styles.header}>
-          <Image source={icons.icon} style={styles.imageStyle} />
-          <Text style={{ color: "white", fontSize: 40, padding: 10 }}>
+          <Text style={{ color: "black", fontSize: 40, padding: 5 }}>
             Frew!
           </Text>
         </View>
@@ -53,7 +59,41 @@ export default function Page() {
         {dataloaded ? (
           <Products data={data} />
         ) : data === null ? (
-          <Text>Can't Retrieve data, check your connection..</Text>
+          <>
+            <Image
+              source={icons.NoInternet}
+              style={{
+                width: 400,
+                height: 400,
+                borderRadius: 16,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 40,
+              }}
+            >
+              Error Loading Data...
+            </Text>
+            <Text
+              style={{
+                backgroundColor: "black",
+                color: "white",
+                padding: 10,
+                borderRadius: 16,
+                marginTop: 10,
+                fontWeight: "bold",
+                fontSize: 20,
+                width: "50%",
+                elevation: 5,
+                margin: 5,
+                textAlign: "center",
+              }}
+              onPress={() => retryLoadingData()}
+            >
+              Retry
+            </Text>
+          </>
         ) : (
           <Text>Loading...</Text>
         )}
@@ -77,14 +117,18 @@ const Products = ({ data }) => {
       return;
     }
     console.log("Navigating with product:", product);
-    navigation.navigate('ProductDetails', { product } );
-  }
+    navigation.navigate("ProductDetails", { product });
+  };
 
   return (
     <GestureHandlerRootView>
       <ScrollView contentContainerStyle={styles.productslist}>
         {data.map((product, index) => (
-          <TouchableOpacity onPress={() => openProductDetails(product)} style={styles.cards} key={index}>
+          <TouchableOpacity
+            onPress={() => openProductDetails(product)}
+            style={styles.cards}
+            key={index}
+          >
             <View>
               <Image
                 source={{ uri: product.image }}
@@ -124,17 +168,14 @@ const Products = ({ data }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
     flex: 1,
     alignItems: "center",
   },
   header: {
     width: "100%",
-    backgroundColor: "#FFAA00",
     borderBottomLeftRadius: 16,
     flexDirection: "row",
     borderBottomRightRadius: 16,
-    elevation: 5,
   },
   imageStyle: {
     width: 50,

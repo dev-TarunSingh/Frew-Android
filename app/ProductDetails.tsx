@@ -13,7 +13,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const ProductDetails = () => {
   const route = useRoute();
-  const { product } = route.params;
+  const { product } = route.params as { product: Product };
 
   if (!product) {
     return (
