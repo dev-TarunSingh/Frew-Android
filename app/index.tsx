@@ -35,6 +35,7 @@ const Styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     width: 200,
+    elevation: 5,
   },
   gif: {
     width: 200,

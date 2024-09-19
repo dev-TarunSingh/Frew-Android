@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Frew",
-    "slug": "your-app-slug",
-    "version": "1.0.0",
+    "slug": "Frew_dev-TarunSingh",
+    "version": "2.1.0",
     "orientation": "portrait",
     "icon": "./assets/frew-png.png",
     "splash": {
@@ -20,18 +20,19 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.frew.frew"
+      "package": "com.devtarunsingh.Frew_devTarunSingh"
     },
     "web": {
       "favicon": "./assets/frew-png.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "5e2bda70-c189-4bf2-a92e-42ffa9102be8"
-      }
-    },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "scheme": "frew",
+    "extra": {
+      "eas": {
+        "projectId": "855080ee-ebfe-492b-b4d0-de56b822bacc"
+      }
+    }
   }
 }

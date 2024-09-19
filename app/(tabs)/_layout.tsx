@@ -33,7 +33,7 @@ const MainLayout = () => {
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveTintColor: "#FFAA00",
+      tabBarActiveTintColor: "#FFAA00",
         tabBarInactiveTintColor: "#CDCDE0",
         tabBarStyle: {
           borderTopEndRadius: 20,
@@ -58,15 +58,29 @@ const MainLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="Cart"
+        name="Post"
         options={{
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
-              icon={icons.cart}
+              icon={icons.AddIcon}
               color={color}
               focused={focused}
-              name="Cart"
+              name="Post"
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Account"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              icon={icons.AccountIcon}
+              color={color}
+              focused={focused}
+              name="Account"
             />
           ),
         }}
