@@ -2,14 +2,12 @@ import React from "react";
 import { Text, TouchableOpacity, StyleSheet, View, Image } from "react-native";
 import icons from "../constonants/icons.js";
 
-export default function FeedCard({ project, title, description, accountName, price }) {
+const FeedCard = ({ project, title, description, accountName, price }) => {
   return (
-    <TouchableOpacity style={styles.Posts_Box}>
+    <TouchableOpacity style={styles.card}>
       <View style={styles.textInfo}>
-        <Text style={styles.Box_text}>{title}</Text>
-        <Text style={styles.Box_desc}>
-          {description}
-        </Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
       </View>
       <View style={styles.pills}>
         <View style={styles.pill}>
@@ -20,19 +18,19 @@ export default function FeedCard({ project, title, description, accountName, pri
           />
           <Text>{accountName}</Text>
         </View>
-        <View style={styles.price_pill}>
-          <Text style={{ fontWeight: "bold", fontSize: 18 }} >{price}</Text>
+        <View style={styles.pricePill}>
+          <Text style={styles.priceText}>{price}</Text>
         </View>
       </View>
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  Posts_Box: {
+  card: {
     backgroundColor: "white",
     margin: 10,
-    padding: 10,
+    padding: 15,
     borderRadius: 10,
     elevation: 5,
     justifyContent: "center",
@@ -42,50 +40,36 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 5,
   },
-  Box_text: {
-    fontSize: 23,
+  title: {
+    fontSize: 20,
     fontWeight: "bold",
   },
-  Box_desc: {
+  description: {
     fontSize: 16,
+    color: "#666",
   },
   pills: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     width: "100%",
-    marginTop: 5
+    marginTop: 10,
   },
   pill: {
-    backgroundColor: "#FFAA00",
-    margin: 5,
-    padding: 5,
-    elevation: 5,
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "#FFAA00",
+    padding: 5,
     borderRadius: 50,
-    fontSize: 16,
-    width: 40,
-    height: 40,
-    flex: 1,
-    color: "white",
-    textAlign: "center",
-    justifyContent: "center",
   },
-  price_pill: {
+  pricePill: {
     backgroundColor: "#FFAA00",
-    margin: 5,
     padding: 5,
-    elevation: 5,
-    flexDirection: "row",
-    alignItems: "center",
     borderRadius: 50,
-    width: 20,
-    height: 40,
-    textAlign: "center",
-    justifyContent: "center",
-    flex: 1
+  },
+  priceText: {
+    fontWeight: "bold",
+    fontSize: 18,
   },
   accountImage: {
     width: 30,
@@ -93,3 +77,5 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
 });
+
+export default FeedCard;

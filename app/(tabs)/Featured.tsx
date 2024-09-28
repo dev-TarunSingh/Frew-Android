@@ -23,17 +23,17 @@ export default function Post() {
   const [price, setPrice] = useState("");
 
   const handleSubmit = () => {
-    console.log("Input 1:", Title);
-    console.log("Input 2:", Description);
-    console.log("Input 3:", Name);
-    console.log("Input 4:", price);
+    console.log("Product Name:", Title);
+    console.log("Description:", Description);
+    console.log("Seller Name:", Name);
+    console.log("Price:", price);
   };
 
   return (
     <>
       <GestureHandlerRootView>
         <View style={styles.header}>
-          <Text style={{ color: "black", fontSize: 40, padding: 5 }}>Post</Text>
+          <Text style={{ color: "black", fontSize: 40, padding: 5 }}>Post Product</Text>
         </View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -46,31 +46,31 @@ export default function Post() {
             />
             <TextInput
               style={styles.input}
-              placeholder="Title"
+              placeholder="Product Name"
               value={Title}
               onChangeText={setTitle}
             />
             <TextInput
               style={styles.input}
-              placeholder="Describe Your Offer"
+              placeholder="Product Description"
               value={Description}
               onChangeText={setDescription}
             />
             <TextInput
               style={styles.input}
-              placeholder="Your Name"
+              placeholder="Seller Name"
               value={Name}
               onChangeText={setName}
             />
             <TextInput
               style={styles.input}
-              placeholder="Your Offer"
+              placeholder="Price"
               value={price}
               keyboardType="numeric"
               onChangeText={setPrice}
             />
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Post</Text>
+              <Text style={styles.buttonText}>Post Product</Text>
             </TouchableOpacity>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: "center",
     padding: 16,
-    paddingBottom: 100, // Add padding to the bottom
+    paddingBottom: 100, 
   },
   header: {
     width: "100%",

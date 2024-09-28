@@ -58,7 +58,7 @@ const MainLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="Post"
+        name="Featured"
         options={{
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
@@ -66,11 +66,12 @@ const MainLayout = () => {
               icon={icons.AddIcon}
               color={color}
               focused={focused}
-              name="Post"
+              name="Featured"
             />
           ),
         }}
       />
+      
       <Tabs.Screen
         name="Account"
         options={{

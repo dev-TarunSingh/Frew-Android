@@ -1,56 +1,48 @@
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   Image,
-  TouchableOpacity,
+  ScrollView,
   StatusBar,
+  Dimensions,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
-import {
-  GestureHandlerRootView,
-  NativeViewGestureHandler,
-} from "react-native-gesture-handler";
-import sampleFreelancingProjects from "../SampleFreeLancingProjects";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import sampleProducts from "../SampleProducts";
 import FeedCard from "../FeedCard";
-import { Link } from "expo-router";
-import { useNavigation } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import icons from "../../constonants/icons.js";
-import { Button } from "react-native-paper";
+import MyCarousel from "../MyCarousel";
 
-export default function Page() {
+
+
+
+const Home = () => {
   
+
   return (
-    <>
-      <View style={styles.container}>
-        <StatusBar />
+    <GestureHandlerRootView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <ScrollView>
         <View style={styles.header}>
-          <Text style={{ color: "black", fontSize: 40, padding: 5 }}>
-            Frew!
-          </Text>
+          <Text style={styles.headerText}>Frew!</Text>
         </View>
-        <Posts />
-      </View>
-    </>
-  );
-}
-const Posts = () => {
-    
-  
-  return (
-    <GestureHandlerRootView>
-      <ScrollView contentContainerStyle={styles.productslist}>
-        {sampleFreelancingProjects.map((project, index) => (
-          <FeedCard
-            key={index}
-            project={project}
-            title={project.title}
-            description={project.description}
-            accountName={project.accountName}
-            price={project.price}
-          />))}
+
+        <MyCarousel />
+
+        
+        <View style={styles.productList}>
+          {sampleProducts.map((product, index) => (
+            <FeedCard
+              key={index}
+              project={product}
+              title={product.title}
+              description={product.description}
+              accountName={product.accountName}
+              price={product.price}
+            />
+          ))}
+        </View>
       </ScrollView>
     </GestureHandlerRootView>
   );
@@ -59,28 +51,29 @@ const Posts = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    backgroundColor: "#f5f5f5",
   },
   header: {
-    width: "100%",
-    borderBottomLeftRadius: 16,
-    flexDirection: "row",
-    borderBottomRightRadius: 16,
+    padding: 20,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
-  imageStyle: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    margin: 10,
-    elevation: 5,
-  },
-  begin: {
-    fontSize: 20,
+  headerText: {
+    fontSize: 24,
     fontWeight: "bold",
-    color: "black",
-    textAlign: "left",
-    padding: 10,
-    elevation: 5,
+    color: "#333",
   },
-  productslist: {},
+  bannerImage: {
+    height: 200,
+    resizeMode: "cover",
+  },
+  carouselContainer: {
+    marginTop: 20,
+  },
+  productList: {
+    padding: 10,
+  },
 });
+
+export default Home;
