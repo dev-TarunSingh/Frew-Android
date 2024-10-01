@@ -1,38 +1,48 @@
 {
-  "expo": {
-    "name": "Frew",
-    "slug": "Frew_dev-TarunSingh",
-    "version": "2.1.0",
-    "orientation": "portrait",
-    "icon": "./assets/frew-png.png",
-    "splash": {
-      "image": "./assets/frew-png.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+  "name": "Frew",
+  "slug": "Frew_dev-TarunSingh",
+  "version": "2.1.0",
+  "orientation": "portrait",
+  "icon": "./assets/frew-png.png",
+  "assetBundlePatterns": [
+    "**/*"
+  ],
+  "plugins": [
+    "expo-router"
+  ],
+  "scheme": "frew",
+  "description": "",
+  "sdkVersion": "51.0.0",
+  "platforms": [
+    "ios",
+    "android",
+    "web"
+  ],
+  "currentFullName": "@dev-tarunsingh/Frew_dev-TarunSingh",
+  "originalFullName": "@dev-tarunsingh/Frew_dev-TarunSingh",
+  "splash": {
+    "image": "./assets/frew-png.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#ffffff"
+  },
+  "updates": {
+    "fallbackToCacheTimeout": 0
+  },
+  "ios": {
+    "supportsTablet": true
+  },
+  "android": {
+    "package": "com.devtarunsingh.Frew"
+  },
+  "web": {
+    "favicon": "./assets/frew-png.png"
+  },
+  "extra": {
+    "eas": {
+      "projectId": "855080ee-ebfe-492b-b4d0-de56b822bacc"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "package": "com.devtarunsingh.Frew_devTarunSingh"
-    },
-    "web": {
-      "favicon": "./assets/frew-png.png"
-    },
-    "plugins": [
-      "expo-router"
-    ],
-    "scheme": "frew",
-    "extra": {
-      "eas": {
-        "projectId": "855080ee-ebfe-492b-b4d0-de56b822bacc"
-      }
+    "router": {
+      "origin": false
     }
   }
 }
