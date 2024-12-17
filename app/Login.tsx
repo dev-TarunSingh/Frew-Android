@@ -5,36 +5,64 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import AuthContext from "../Contexts/AuthContext";
 import { useRouter } from "expo-router";
+import axios from "axios";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
 
   const router = useRouter();
 
   const handleSubmit = () => {
-    login(email);
+    setLoading(true);
+    axios
+      .post("https://frew-backend.onrender.com/api/users/login", {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        console.log("here");
+        console.log(res.data);
+        login(res.data.username);
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.error("Error response:", error.response.data);
+          alert(`Error: ${error.response.data.message}`);
+        } else if (error.request) {
+          console.error("Error request:", error.request);
+          alert("Error: No response from server.");
+        } else {
+          console.error("Error message:", error.message);
+          alert(`Error: ${error.message}`);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.link}
+        onPress={() => router.replace("/Register")}
+      >
+        <Text style={styles.linkText}>Register</Text>
+      </TouchableOpacity>
       <StatusBar backgroundColor="#FFAA00" style="dark" />
       <View style={styles.headText}>
         <Text style={styles.header}>Sign In</Text>
         <Text style={styles.breif}>
           Sign In to your account to continue using our app!
         </Text>
-        <TouchableOpacity
-          style={styles.link}
-          onPress={() => router.replace("/Register")}
-        >
-          <Text style={styles.linkText}>Register</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
@@ -55,10 +83,13 @@ const Login: React.FC = () => {
             secureTextEntry
           />
         </View>
-        <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-          <Text style={styles.btnText}>Login</Text>
+        <TouchableOpacity style={styles.btn} onPress={handleSubmit} disabled={loading}>
+          {loading ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <Text style={styles.btnText}>Login</Text>
+          )}
         </TouchableOpacity>
-        
       </View>
     </View>
   );
@@ -80,11 +111,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 20,
     paddingTop: 32,
-    borderRadius: 40,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
     elevation: 10,
     position: "absolute",
     bottom: 0,
-    height: "70%",
+    height: "50%",
   },
   header: {
     fontSize: 42,
@@ -106,6 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     backgroundColor: "#e3e4e5",
+    paddingStart: 20,
   },
   btn: {
     backgroundColor: "black",
@@ -124,17 +157,15 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingVertical: 15,
     position: "absolute",
-    top: 5,
+    top: 40,
     margin: 10,
     right: 10,
     backgroundColor: "white",
     borderRadius: 50,
     paddingHorizontal: 20,
-    elevation: 10,
-    
   },
   linkText: {
-    color: "black",
+    color: "#FFAA00",
     fontWeight: "bold",
     fontSize: 16,
   },

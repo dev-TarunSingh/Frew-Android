@@ -20,9 +20,10 @@ export const AuthProvider = ({ children }) => {
         checkAuth();
     }, [user]);
 
-    const login = async (email) => {
-        console.log('Logged in as ' + email);
-        setUser(email);
+    const login = async (username) => {
+        console.log('Logged in as ' + username);
+        setUser(username);
+        router.replace('/');
     };
 
     const logout = async () => {
