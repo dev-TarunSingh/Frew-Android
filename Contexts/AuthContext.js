@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
         const checkAuth = async () => {
             if (user != null) {
                 console.log('User is logged in');
-                router.replace('/(tabs)/index');
+                router.replace('/');
             } else {
                 router.replace('/Login');
             }
