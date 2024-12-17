@@ -1,11 +1,14 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Link } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
 import AuthContext from '../Contexts/AuthContext';
+import { useRouter } from 'expo-router';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useContext(AuthContext);
+
+    const router = useRouter();
 
     const handleSubmit = () => {
         login(email);
@@ -34,6 +37,9 @@ const Login: React.FC = () => {
             </View>
             <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
                 <Text style={styles.btnText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.link} onPress= {() => router.replace('/Register')}>
+                <Text style={styles.linkText}>Don't have an account? Register</Text>
             </TouchableOpacity>
             
         </View>
