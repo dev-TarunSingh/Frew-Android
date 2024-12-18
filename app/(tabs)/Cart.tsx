@@ -1,6 +1,7 @@
 import React from 'react';
+import { Button, View, Text } from 'react-native';
 
-const Cart: React.FC = () => {
+const Cart = () => {
     const [items, setItems] = React.useState<{ id: number; name: string; price: number; quantity: number }[]>([]);
 
     const addItem = (id: number, name: string, price: number) => {
@@ -22,19 +23,19 @@ const Cart: React.FC = () => {
     const total = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
-        <div>
-            <h2>Shopping Cart</h2>
-            <ul>
+        <View>
+            <Text>Shopping Cart</Text>
+            <View>
                 {items.map(item => (
                     <li key={item.id}>
                         {item.name} - ${item.price} x {item.quantity}
-                        <button onClick={() => removeItem(item.id)}>Remove</button>
+                        <Button onPress={() => removeItem(item.id)} title="Remove" />
                     </li>
                 ))}
-            </ul>
-            <h3>Total: ${total.toFixed(2)}</h3>
-            <button onClick={() => addItem(1, 'Sample Item', 10)}>Add Sample Item</button>
-        </div>
+            </View>
+            <Text>Total: ${total.toFixed(2)}</Text>
+            <Button title="Add Sample Item" onPress={() => addItem(1, 'Sample Item', 10)} />
+        </View>
     );
 };
 
