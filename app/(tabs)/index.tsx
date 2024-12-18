@@ -1,42 +1,56 @@
-import { Image, StyleSheet, Platform, Text, View } from 'react-native';
-import React, { useContext } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AuthContext from '../../Contexts/AuthContext';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  Text,
+  View,
+  TextInput,
+} from "react-native";
+import React, { useContext } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import AuthContext from "../../Contexts/AuthContext";
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useContext(AuthContext);
-  console.log(user);
   return (
-    <View style={{ paddingTop: insets.top }}>
+    <>
+      <View style={{ paddingTop: insets.top }}> </View>
       <View style={styles.titleContainer}>
-        <Text>Home</Text>
-        <Text>{user}</Text>
+        <Text style={styles.name}>Hi, {user}</Text>
+
+        <Text style={styles.title}>Let's find your new outfit Today?</Text>
+        <TextInput placeholder="Search" style={styles.search} />
       </View>
-      <View style={styles.stepContainer}>
-        <Text>To get started, edit app/(tabs)/index.tsx</Text>
-        <Text>Press Cmd + R to reload</Text>
-        <Text>Learn More</Text>
-      </View>
-    </View>
+      
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
     gap: 8,
+    padding: 10,
+    flex: 1,
+    flexDirection: "column",
+    alignContent: "flex-start",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  name: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "gray",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "black",
+  },
+  search: {
+    padding: 10,
+    height: 50,
+    backgroundColor: "white",
+    borderRadius: 50,
+    elevation: 10,
+    fontSize: 16,
   },
 });

@@ -14,9 +14,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="Cart"
         options={{
-          title: 'Explore',
+          title: 'Cart',
+        }}
+      />
+      <Tabs.Screen
+        name="Account"
+        options={{
+          title: 'Account',
         }}
       />
     </Tabs>

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthContext = createContext();
 
@@ -9,25 +10,43 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const checkAuth = async () => {
-            if (user != null) {
-                console.log('User is logged in');
-                router.replace('/');
-            } else {
+            try {
+                const storedUser = await AsyncStorage.getItem('user');
+                if (storedUser) {
+                    setUser(storedUser);
+                    console.log('User is logged in');
+                    router.replace('/');
+                } else {
+                    router.replace('/Login');
+                }
+            } catch (error) {
+                console.error('Failed to load user from storage:', error);
                 router.replace('/Login');
             }
         };
 
         checkAuth();
-    }, [user]);
+    }, []);
 
     const login = async (username) => {
-        console.log('Logged in as ' + username);
-        setUser(username);
-        router.replace('/');
+        try {
+            await AsyncStorage.setItem('user', username);
+            setUser(username);
+            console.log('Logged in as ' + username);
+            router.replace('/');
+        } catch (error) {
+            console.error('Failed to save user to storage:', error);
+        }
     };
 
     const logout = async () => {
-        setUser(null);
+        try {
+            await AsyncStorage.removeItem('user');
+            setUser(null);
+            router.replace('/Login');
+        } catch (error) {
+            console.error('Failed to remove user from storage:', error);
+        }
     };
 
     return (
