@@ -12,15 +12,25 @@ import {
 import React, { useContext } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AuthContext from "../../Contexts/AuthContext";
+import { useNavigation } from '@react-navigation/native';
 import ProductContext from "../../Contexts/ProductContext";
+import CartContext from "../../Contexts/CartContext";
 import { StatusBar } from "expo-status-bar";
 import { router } from "expo-router";
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
   const { user } = useContext(AuthContext);
   const { products, loading, refreshing, refreshProducts, error } =
     useContext(ProductContext);
+
+  const { addItem, isInCart } = useContext(CartContext);
+
+  const capitalizeFirstLetter = (string: string) => {
+    if (!string) return string;
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
   const categories = ["Men", "Women", "Accessories", "Kids", "Shoes"];
   return (
@@ -28,7 +38,7 @@ export default function HomeScreen() {
       <StatusBar style="dark" />
       <View style={{ paddingTop: insets.top }}>
         <View style={styles.titleContainer}>
-          <Text style={styles.name}>Hi, {user}</Text>
+          <Text style={styles.name}>Hi, {capitalizeFirstLetter(user)}</Text>
           <Text style={styles.title}>Let's find your new outfit Today?</Text>
           <TouchableOpacity
             style={styles.search}
@@ -45,9 +55,13 @@ export default function HomeScreen() {
             />
           }
         >
-          <View  style={styles.categoryStack}>
+          <View style={styles.categoryStack}>
             <Text style={styles.catText}>Categories</Text>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.catPills}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={styles.catPills}
+            >
               {categories.map((category) => (
                 <TouchableOpacity key={category} style={styles.Pill}>
                   <Text>{category}</Text>
@@ -65,16 +79,42 @@ export default function HomeScreen() {
             <View>
               <Text style={styles.sectionTitle}>Featured Products</Text>
               <View style={styles.productList}>
-                {products.map((product: { id: React.Key | null | undefined; image: any; title: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; price: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
-                  <View key={product.id} style={styles.productCard}>
-                    <Image
-                      source={{ uri: product.image }}
-                      style={styles.productImage}
-                    />
-                    <Text style={styles.productName}>{product.title.slice(0,35)}</Text>
-                    <Text style={styles.productPrice}>RS. {product.price}</Text>
-                  </View>
-                ))}
+                {products.map(
+                  (product ) => (
+                    <TouchableOpacity
+                    onPress={() => navigation.navigate('ProductDetails', { product })}
+                      key={product.id}
+                      style={styles.productCard}
+                    >
+                      <Image
+                        source={{ uri: product.image }}
+                        style={styles.productImage}
+                      />
+                      <Text style={styles.productName}>
+                        {product.title.slice(0, 35)}
+                      </Text>
+                      <Text style={styles.productPrice}>
+                        ₹ {product.price}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() => addItem(product)}
+                        style={{
+                          backgroundColor: isInCart(product.id)
+                            ? "gray"
+                            : "#FFAA00",
+                          padding: 10,
+                          borderRadius: 10,
+                          marginTop: 10,
+                        }}
+                        disabled={isInCart(product.id)}
+                      >
+                        <Text>
+                          {isInCart(product.id) ? "Added" : "Add To Cart"}
+                        </Text>
+                      </TouchableOpacity>
+                    </TouchableOpacity>
+                  )
+                )}
                 {error && <Text style={styles.errorText}>{error}</Text>}
               </View>
             </View>
@@ -116,7 +156,7 @@ const styles = StyleSheet.create({
   },
   catPills: {
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   Pill: {
     padding: 10,
@@ -149,6 +189,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     padding: 10,
+    marginBottom: 200,
   },
   productCard: {
     width: "48%",

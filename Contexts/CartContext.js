@@ -1,36 +1,46 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
+// Create context
 const CartContext = createContext();
 
-const cartReducer = (state, action) => {
-    switch (action.type) {
-        case 'ADD_TO_CART':
-            return [...state, action.payload];
-        case 'REMOVE_FROM_CART':
-            return state.filter(item => item.id !== action.payload.id);
-        default:
-            return state;
-    }
-};
-
+// Context provider component
 export const CartProvider = ({ children }) => {
-    const [cart, dispatch] = useReducer(cartReducer, []);
+  const [cart, setCart] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
 
-    const addToCart = item => {
-        dispatch({ type: 'ADD_TO_CART', payload: item });
-    };
+  const updateTotalAmount = (updatedCart) => {
+    const total = updatedCart.reduce((sum, item) => sum + Number(item.price || 0), 0);
+    setTotalAmount(total);
+  };
 
-    const removeFromCart = item => {
-        dispatch({ type: 'REMOVE_FROM_CART', payload: item });
-    };
+  const addItem = (item) => {
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart, item];
+      updateTotalAmount(updatedCart);
+      return updatedCart;
+    });
+  };
 
-    return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
-            {children}
-        </CartContext.Provider>
-    );
+  const removeItem = (item) => {
+    setCart((prevCart) => {
+      const updatedCart = prevCart.filter(
+        (cartItem) => cartItem.id !== item.id
+      );
+      updateTotalAmount(updatedCart);
+      return updatedCart;
+    });
+  };
+
+  const isInCart = (itemId) => {
+    return cart.some((cartItem) => cartItem.id === itemId);
+  };
+
+  return (
+    <CartContext.Provider value={{ cart, addItem, removeItem, totalAmount, isInCart }}>
+      {children}
+    </CartContext.Provider>
+  );
 };
 
-export const useCart = () => {
-    return useContext(CartContext);
-};
+// Custom hook to use the CartContext
+export default CartContext;
