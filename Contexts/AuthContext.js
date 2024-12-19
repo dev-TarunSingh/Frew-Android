@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }) => {
         try {
             await AsyncStorage.setItem('user', username);
             setUser(username);
-            console.log('Logged in as ' + username);
             router.replace('/');
         } catch (error) {
             console.error('Failed to save user to storage:', error);
