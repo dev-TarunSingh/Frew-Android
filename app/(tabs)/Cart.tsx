@@ -1,21 +1,16 @@
 import React, { useContext } from "react";
-import {
-  Button,
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 import CartContext from "../../Contexts/CartContext";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
+import { useRoute } from '@react-navigation/native';
 
 const Cart = () => {
-  const { cart, removeItem, totalAmount } = useContext(CartContext);
-  const insets = useSafeAreaInsets();
+    const route = useRoute();
+  const { cart, removeItem, totalAmount, setCart } = useContext(CartContext);
+  const navigation = useNavigation();
 
-  const confirmRemoveItem = (item: any) => {
+  const confirmRemoveItem = (item) => {
     Alert.alert(
       "Remove Item",
       "Are you sure you want to remove this item from the cart?",
@@ -32,41 +27,36 @@ const Cart = () => {
     );
   };
 
-  const renderItem = ({ item }: { item: { id: number; title: string; price: number } }) => (
+  const handleCheckout = () => {
+    setCart([]);
+    navigation.replace('Checkout');
+  };
+
+  const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemName}>{item.title}</Text>
-      <Text style={styles.itemPrice}>${item.price ? item.price : "N/A"}</Text>
+      <Text style={styles.itemPrice}>${Number(item.price).toFixed(2)}</Text>
       <TouchableOpacity style={styles.checkoutButton}>
-        <Text onPress={() => confirmRemoveItem(item)} style={styles.btnText}>
-          Remove
-        </Text>
+        <Text onPress={() => confirmRemoveItem(item)} style={styles.btnText}>Remove</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <>
-      <View style={{ paddingTop: insets.top }}></View>
-      <View style={styles.container}>
-        <Text style={styles.title}>Shopping Cart</Text>
-        <View style={styles.cartList}>
-          <FlatList
-            data={cart}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id.toString()}
-          />
-          <TouchableOpacity style={styles.checkoutButton}>
-            <Text
-              onPress={() => console.log("Proceed to checkout")}
-              style={styles.btnText}
-            >
-              Checkout
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.totalAmount}>Total: {totalAmount}</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Shopping Cart</Text>
+      <View style={styles.cartList}>
+        <FlatList
+          data={cart}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
+        />
+        <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
+          <Text style={styles.btnText}>Checkout</Text>
+        </TouchableOpacity>
       </View>
-    </>
+      <Text style={styles.totalAmount}>Total: ${totalAmount.toFixed(2)}</Text>
+    </View>
   );
 };
 
@@ -74,18 +64,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: '#f5f5f5',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
   },
   cartList: {
     flex: 1,
   },
   itemContainer: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
@@ -93,28 +83,28 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   itemPrice: {
     fontSize: 16,
-    color: "gray",
+    color: 'gray',
     marginBottom: 10,
   },
   checkoutButton: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
     padding: 10,
     borderRadius: 10,
     marginTop: 10,
   },
   btnText: {
-    color: "#FFFFFF",
-    textAlign: "center",
-    fontWeight: "bold",
+    color: '#FFFFFF',
+    textAlign: 'center',
+    fontWeight: 'bold',
     fontSize: 16,
   },
   totalAmount: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 20,
   },
 });
