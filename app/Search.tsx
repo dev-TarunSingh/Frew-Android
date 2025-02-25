@@ -17,7 +17,7 @@ const Search = () => {
     if (query === "") {
       setFilteredProducts([]);
     } else {
-      const filtered = products.filter(product =>
+      const filtered = products.filter((product: { title: string; }) =>
         product.title.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredProducts(filtered);

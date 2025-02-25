@@ -1,19 +1,21 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwtDecode from 'jwt-decode';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [userProfile, setUserProfile] = useState(null);
     const router = useRouter();
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const storedUser = await AsyncStorage.getItem('user');
-                if (storedUser) {
-                    setUser(storedUser);
+                const storedToken = await AsyncStorage.getItem('token');
+                if (storedToken) {
+                    const decodedProfile = jwtDecode(storedToken);
+                    setUserProfile(decodedProfile);
                     console.log('User is logged in');
                     router.replace('/');
                 } else {
@@ -28,10 +30,11 @@ export const AuthProvider = ({ children }) => {
         checkAuth();
     }, []);
 
-    const login = async (username) => {
+    const login = async (token) => {
         try {
-            await AsyncStorage.setItem('user', username);
-            setUser(username);
+            await AsyncStorage.setItem('token', token);
+            const decodedProfile = jwtDecode(token);
+            setUserProfile(decodedProfile);
             router.replace('/');
         } catch (error) {
             console.error('Failed to save user to storage:', error);
@@ -40,8 +43,8 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            await AsyncStorage.removeItem('user');
-            setUser(null);
+            await AsyncStorage.removeItem('token');
+            setUserProfile(null);
             router.replace('/Login');
         } catch (error) {
             console.error('Failed to remove user from storage:', error);
@@ -49,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ userProfile, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

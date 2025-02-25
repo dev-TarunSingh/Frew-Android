@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import CartContext from "../../Contexts/CartContext";
-import { router } from "expo-router";
 import { useRoute } from '@react-navigation/native';
 
 const Cart = () => {

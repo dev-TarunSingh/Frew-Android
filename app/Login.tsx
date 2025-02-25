@@ -28,9 +28,8 @@ const Login: React.FC = () => {
         password: password,
       })
       .then((res) => {
-        console.log("here");
-        console.log(res.data);
-        login(res.data.username);
+        const token = res.data.token; // Extract token from response
+        login(token); // Call login with the token
       })
       .catch((error) => {
         if (error.response) {
